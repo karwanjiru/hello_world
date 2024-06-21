@@ -1,0 +1,27 @@
+# asyncflows-language-server
+# yaml-language-server: $schema=https://raw.githubusercontent.com/asynchronous-flows/asyncflows/main/schemas/asyncflows_schema.json
+
+default_model:
+  model: ollama/llama3
+
+flow:
+   
+  # The `prompt` action asks the LLM to generate a writing sample
+  text_style_transfer:
+    action: prompt
+    prompt:
+      # We include a system message asking the LLM to respond in the style of the example
+      - role: system
+        text: You're a helpful assistant. Respond only in the style of the example.
+      # And a user message asking the LLM to write about the query
+      # This is a jinja template; the variables `writing_sample` and `query` will be replaced with 
+      #  values provided upon running the flow
+      - role: user
+        text: |
+          Here is a writing example:
+          ```
+          {{ writing_sample }}
+          ```
+          In the style of the example, write about {{ topic }}.
+
+default_output: text_style_transfer.result
